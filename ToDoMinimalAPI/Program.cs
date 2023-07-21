@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using ToDoMinimalAPI.ToDo;
 
 namespace ToDoMinimalAPI
@@ -27,11 +26,7 @@ namespace ToDoMinimalAPI
 
             app.UseHttpsRedirection();
 
-            app.MapGet("/todos", (IToDoService service) => service.GetAll());
-            app.MapGet("/todos/{id}", (IToDoService service, Guid id) => service.GetById(id));
-            app.MapPost("/todos", (IToDoService service, ToDo.ToDo toDo) => service.Create(toDo));
-            app.MapPut("/todos/{id}", (IToDoService service, Guid id, ToDo.ToDo toDo) => service.Update(toDo));
-            app.MapDelete("/todos/{id}", (IToDoService service, Guid id) => service.Delete(id));
+            app.RegisterEndpoints();
 
             app.Run();
         }
