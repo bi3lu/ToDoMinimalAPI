@@ -4,11 +4,31 @@
     {
         public static WebApplication RegisterEndpoints(this WebApplication app)
         {
-            app.MapGet("/todos", ToDoRequests.GetAll);
-            app.MapGet("/todos/{id}", ToDoRequests.GetById);
-            app.MapPost("/todos", ToDoRequests.Create);
-            app.MapPut("/todos/{id}", ToDoRequests.Update);
-            app.MapDelete("/todos/{id}", ToDoRequests.Delete);
+            app.MapGet("/todos", ToDoRequests.GetAll)
+                .Produces<List<ToDo>>()
+                .WithTags("To Dos");
+
+            app.MapGet("/todos/{id}", ToDoRequests.GetById)
+                .Produces<ToDo>()
+                .Produces(StatusCodes.Status404NotFound)
+                .WithTags("To Dos");
+
+            app.MapPost("/todos", ToDoRequests.Create)
+                .Produces<ToDo>(StatusCodes.Status201Created)
+                .Accepts<ToDo>("application/json")
+                .WithTags("To Dos");
+
+            app.MapPut("/todos/{id}", ToDoRequests.Update)
+                .Produces(StatusCodes.Status204NoContent)
+                .Produces(StatusCodes.Status404NotFound)
+                .Accepts<ToDo>("application/json")
+                .WithTags("To Dos");
+
+            app.MapDelete("/todos/{id}", ToDoRequests.Delete)
+                .Produces(StatusCodes.Status204NoContent)
+                .Produces(StatusCodes.Status404NotFound)
+                .WithTags("To Dos")
+                .ExcludeFromDescription();
 
             return app;
         }
