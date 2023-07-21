@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Authorization;
 
 namespace ToDoMinimalAPI.ToDo
 {
@@ -38,12 +37,14 @@ namespace ToDoMinimalAPI.ToDo
             return app;
         }
 
+        [Authorize]
         public static IResult GetAll(IToDoService service)
         {
             var todos = service.GetAll();
             return Results.Ok(todos);
         }
 
+        [Authorize]
         public static IResult GetById(IToDoService service, Guid id)
         {
             var todo = service.GetById(id);
@@ -56,6 +57,7 @@ namespace ToDoMinimalAPI.ToDo
             return Results.Ok(todo);
         }
 
+        [Authorize]
         public static IResult Create(IToDoService service, ToDo toDo)
         {
             service.Create(toDo);
@@ -63,6 +65,7 @@ namespace ToDoMinimalAPI.ToDo
             return Results.Created($"/todos/{toDo.Id}", toDo);
         }
 
+        [Authorize]
         public static IResult Update(IToDoService service, Guid id, ToDo toDo)
         {
             var todo = service.GetById(id);
@@ -77,6 +80,7 @@ namespace ToDoMinimalAPI.ToDo
             return Results.NoContent();
         }
 
+        [Authorize]
         public static IResult Delete(IToDoService service, Guid id)
         {
             var todo = service.GetById(id);
